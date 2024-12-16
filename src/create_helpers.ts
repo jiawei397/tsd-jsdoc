@@ -159,6 +159,22 @@ function handlePropertiesComment(doclet: TDoclet): string
     return ''
 }
 
+function handleTagsComment(doclet: TDoclet): string
+{
+    if (doclet.tags)
+    {
+        return doclet.tags.map((tag) =>
+        {
+            if (tag.title === 'template') {
+                return '';
+            }
+            return `\n * @${tag.title} ${tag.value}`;
+        }
+        ).filter((value) => value !== '').join('');
+    }
+    return '';
+}
+
 function handleComment<T extends ts.Node>(doclet: TDoclet, node: T): T
 {
     if (doclet.comment && doclet.comment.length > 4)
@@ -177,6 +193,7 @@ function handleComment<T extends ts.Node>(doclet: TDoclet, node: T): T
         const properties = handlePropertiesComment(doclet);
         const params = handleParamsComment(doclet);
         const returns = handleReturnsComment(doclet);
+        const tags = handleTagsComment(doclet);
 
         if (isEnumDoclet(doclet))
         {
@@ -202,9 +219,9 @@ function handleComment<T extends ts.Node>(doclet: TDoclet, node: T): T
             }
         }
 
-        if (description || examples || properties || params || returns)
+        if (description || examples || properties || params || returns || tags)
         {
-            let comment = `*${description}${examples}${properties}${params}${returns}
+            let comment = `*${description}${examples}${properties}${params}${tags}${returns}
  `;
 
             const kind = ts.SyntaxKind.MultiLineCommentTrivia;

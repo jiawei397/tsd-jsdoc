@@ -1,5 +1,7 @@
 # tsd-jsdoc
 
+> This is a fork of [tsd-jsdoc](https://github.com/englercj/tsd-jsdoc), only support for unlimited tags.
+
 This library's goal is to be able to take as input a JSDoc annotated source JavaScript
 file (or many files) and output a single TypeScript Declaration File (.d.ts).
 
@@ -11,7 +13,7 @@ result in a TypeScript Definition File.
 You can install this module from npm:
 
 ```
-$> npm install tsd-jsdoc
+$> npm install @jqy397/tsd-jsdoc
 ```
 
 ## Usage
@@ -21,7 +23,7 @@ To use this module, simply specify it as the template for your normal JSDoc gene
 For example, from the command-line you can do:
 
 ```
-$> jsdoc -t node_modules/tsd-jsdoc/dist -r .
+$> jsdoc -t node_modules/@jqy397/tsd-jsdoc/dist -r .
 ```
 
 Or add this to your JSON configuration:
@@ -29,7 +31,7 @@ Or add this to your JSON configuration:
 ```json
 {
     "opts": {
-        "template": "./node_modules/tsd-jsdoc/dist"
+        "template": "./node_modules/@jqy397/tsd-jsdoc/dist"
     }
 }
 ```

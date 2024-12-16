@@ -1,13 +1,13 @@
 {
-  "name": "tsd-jsdoc",
-  "version": "2.5.0",
+  "name": "@jqy397/tsd-jsdoc",
+  "version": "2.6.0",
   "description": "Compiles JSDoc annotated javascript into a Typescript Declaration File (.d.ts).",
   "main": "dist/publish.js",
-  "author": "Chad Engler <chad@pantherdev.com>",
+  "author": "jiawei397 <jw397@126.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:englercj/jsdoc2tsd.git"
+    "url": "git@github.com:jiawei397/tsd-jsdoc.git"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",

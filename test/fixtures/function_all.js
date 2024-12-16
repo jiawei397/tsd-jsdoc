@@ -4,6 +4,9 @@
  * @param {Object} input
  * @param {number} input.x
  * @param {number} input.y
+ * @output {string} output
+ * @output2 output2
+ * @output3 {string} - xxx
  */
 function test1(input) {
 }

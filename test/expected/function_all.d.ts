@@ -1,3 +1,8 @@
+/**
+ * @output {string} output
+ * @output2 output2
+ * @output3 {string} - xxx
+ */
 declare function test1(a?: number, input: {
     x: number;
     y: number;
