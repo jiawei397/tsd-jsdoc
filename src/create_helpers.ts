@@ -1,6 +1,6 @@
 import * as ts from 'typescript';
 import { warn } from './logger';
-import { isClassDoclet, isEnumDoclet, isFileDoclet, isEventDoclet, isFunctionDoclet, isTypedefDoclet } from './doclet_utils';
+import { isClassDoclet, isEnumDoclet, isFileDoclet, isEventDoclet, isFunctionDoclet, isTypedefDoclet, isMemberDoclet } from './doclet_utils';
 import { PropTree } from "./PropTree";
 import {
     createFunctionParams,
@@ -179,7 +179,7 @@ function handleComment<T extends ts.Node>(doclet: TDoclet, node: T): T
 {
     if (doclet.comment && doclet.comment.length > 4)
     {
-        if (isClassDoclet(doclet) || isFunctionDoclet(doclet)) {
+        if (isClassDoclet(doclet) || isFunctionDoclet(doclet) || isMemberDoclet(doclet) || isEnumDoclet(doclet)) {
             const comment = doclet.comment!.substring(2).slice(0, -2).split('\n')
                 .filter(line => line.trim())
                 .map((line, i) => i === 0 ? line.trim() : (' ' + line.trim()))
@@ -212,20 +212,20 @@ function handleComment<T extends ts.Node>(doclet: TDoclet, node: T): T
                     return node;
                 }
 
-                if (doclet.properties)
-                {
-                    const enumProperties = doclet.properties;
-                    const enumMembers = node.members;
+                // if (doclet.properties)
+                // {
+                //     const enumProperties = doclet.properties;
+                //     const enumMembers = node.members;
 
-                    for (let index = 0; index < enumProperties.length; index++)
-                    {
-                        const enumProperty = enumProperties[index];
-                        const enumMember = enumMembers[index];
+                //     for (let index = 0; index < enumProperties.length; index++)
+                //     {
+                //         const enumProperty = enumProperties[index];
+                //         const enumMember = enumMembers[index];
 
-                        // TODO: Remove this type assertion.
-                        handleComment(enumProperty as IMemberDoclet, enumMember);
-                    }
-                }
+                //         // TODO: Remove this type assertion.
+                //         handleComment(enumProperty as IMemberDoclet, enumMember);
+                //     }
+                // }
             }
 
             if (description || examples || properties || params || returns)

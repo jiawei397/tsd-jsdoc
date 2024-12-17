@@ -1,6 +1,6 @@
 {
   "name": "@jqy397/tsd-jsdoc",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "description": "Compiles JSDoc annotated javascript into a Typescript Declaration File (.d.ts).",
   "main": "dist/publish.js",
   "author": "jiawei397 <jw397@126.com>",
