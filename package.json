@@ -7,7 +7,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:jiawei397/tsd-jsdoc.git"
+    "url": "git+ssh://git@github.com/jiawei397/tsd-jsdoc.git"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
