@@ -179,54 +179,64 @@ function handleComment<T extends ts.Node>(doclet: TDoclet, node: T): T
 {
     if (doclet.comment && doclet.comment.length > 4)
     {
-        let description = '';
-        if (doclet.description)
-        {
-            description = `\n * ${formatMultilineComment(doclet.description)}`;
-        }
-        else if (isClassDoclet(doclet) && doclet.classdesc)
-        {
-            description = `\n * ${formatMultilineComment(doclet.classdesc)}`;
-        }
-
-        const examples = handleExamplesComment(doclet);
-        const properties = handlePropertiesComment(doclet);
-        const params = handleParamsComment(doclet);
-        const returns = handleReturnsComment(doclet);
-        const tags = handleTagsComment(doclet);
-
-        if (isEnumDoclet(doclet))
-        {
-            if (!ts.isEnumDeclaration(node))
-            {
-                warn(`Node is not an enum declaration, even though the doclet is. This is likely a tsd-jsdoc bug.`);
-                return node;
+        if (isClassDoclet(doclet) || isFunctionDoclet(doclet)) {
+            const comment = doclet.comment!.substring(2).slice(0, -2).split('\n')
+                .filter(line => line.trim())
+                .map((line, i) => i === 0 ? line.trim() : (' ' + line.trim()))
+                .join('\n');
+            if (comment) {
+                const kind = ts.SyntaxKind.MultiLineCommentTrivia;
+                ts.addSyntheticLeadingComment(node, kind, comment + '\n ', true);
             }
-
-            if (doclet.properties)
+        } else {
+            let description = '';
+            if (doclet.description)
             {
-                const enumProperties = doclet.properties;
-                const enumMembers = node.members;
+                description = `\n * ${formatMultilineComment(doclet.description)}`;
+            }
+            // else if (isClassDoclet(doclet) && doclet.classdesc)
+            // {
+            //     description = `\n * ${formatMultilineComment(doclet.classdesc)}`;
+            // }
 
-                for (let index = 0; index < enumProperties.length; index++)
+            const examples = handleExamplesComment(doclet);
+            const properties = handlePropertiesComment(doclet);
+            const params = handleParamsComment(doclet);
+            const returns = handleReturnsComment(doclet);
+
+            if (isEnumDoclet(doclet))
+            {
+                if (!ts.isEnumDeclaration(node))
                 {
-                    const enumProperty = enumProperties[index];
-                    const enumMember = enumMembers[index];
+                    warn(`Node is not an enum declaration, even though the doclet is. This is likely a tsd-jsdoc bug.`);
+                    return node;
+                }
 
-                    // TODO: Remove this type assertion.
-                    handleComment(enumProperty as IMemberDoclet, enumMember);
+                if (doclet.properties)
+                {
+                    const enumProperties = doclet.properties;
+                    const enumMembers = node.members;
+
+                    for (let index = 0; index < enumProperties.length; index++)
+                    {
+                        const enumProperty = enumProperties[index];
+                        const enumMember = enumMembers[index];
+
+                        // TODO: Remove this type assertion.
+                        handleComment(enumProperty as IMemberDoclet, enumMember);
+                    }
                 }
             }
-        }
 
-        if (description || examples || properties || params || returns || tags)
-        {
-            let comment = `*${description}${examples}${properties}${params}${tags}${returns}
- `;
+            if (description || examples || properties || params || returns)
+            {
+                let comment = `*${description}${examples}${properties}${params}${returns}
+     `;
 
-            const kind = ts.SyntaxKind.MultiLineCommentTrivia;
+                const kind = ts.SyntaxKind.MultiLineCommentTrivia;
 
-            ts.addSyntheticLeadingComment(node, kind, comment, true);
+                ts.addSyntheticLeadingComment(node, kind, comment, true);
+            }
         }
     }
 
